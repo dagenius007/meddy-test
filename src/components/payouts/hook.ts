@@ -1,21 +1,28 @@
 import { useEffect, useState } from "react";
-import { IPayout } from "./types";
+import { IPayoutResponse } from "./types";
 import request from "../../config/api";
 
-export const useGetPayouts = () => {
-  const [data, setData] = useState<IPayout[]>([]);
+export const useGetPayouts = (page = 1, limit = 10) => {
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<IPayoutResponse>();
 
   useEffect(() => {
     const requestPayout = async () => {
-      const { data } = await request.get("/payouts");
+      try {
+        //build query
+        let query = `page=${page}&limit=${limit}`;
+        const { data } = await request.get(`/payouts?${query}`);
 
-      console.log({ data });
-
-      setData(data.data);
+        setData(data);
+      } catch (e) {
+        console.log({ e });
+      } finally {
+        setLoading(false);
+      }
     };
 
     requestPayout();
-  }, []);
+  }, [page]);
 
-  return { data };
+  return { data, loading };
 };
