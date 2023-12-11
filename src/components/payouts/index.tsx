@@ -5,12 +5,16 @@ import { useGetPayouts } from "./hook";
 import { IPayout } from "./types";
 import TableHeader from "../table/table-header";
 import Pill from "../pills/Pill";
+import { useDebounce } from "../../hooks/useDebounce";
 
 const Payouts: React.FC = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [searchValue, setSearchValue] = useState("");
 
-  const { data, loading } = useGetPayouts(page, limit);
+  const debouncValue = useDebounce(searchValue, 500);
+
+  const { data, loading } = useGetPayouts(page, limit, debouncValue);
 
   const columns = [
     {
@@ -44,9 +48,17 @@ const Payouts: React.FC = () => {
     },
   ];
 
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
   return (
     <div className="">
-      <TableHeader title="Payout History" />
+      <TableHeader
+        title="Payout History"
+        searchValue={searchValue}
+        onHandleSearchInput={onChange}
+      />
       {loading ? (
         <p>Loading....</p>
       ) : (
@@ -66,7 +78,7 @@ const Payouts: React.FC = () => {
               console.log({ pageSize });
               setLimit(pageSize);
             }}
-            totalRecords={data?.metadata.totalCount as number}
+            totalRecords={(data?.metadata?.totalCount || 0) as number}
             currentPage={page}
             pageSize={limit}
           />

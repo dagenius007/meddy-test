@@ -1,19 +1,37 @@
 import { useEffect, useState } from "react";
-import { IPayoutResponse } from "./types";
+import { IPayoutData } from "./types";
 import request from "../../config/api";
+import { AxiosResponse } from "axios";
 
-export const useGetPayouts = (page = 1, limit = 10) => {
+export const useGetPayouts = (page = 1, limit = 10, searchValue: string) => {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<IPayoutResponse>();
+  const [data, setData] = useState<IPayoutData>({
+    data: [],
+    metadata: {
+      page: 1,
+      limit: 10,
+      totalCount: 0,
+    },
+  });
 
   useEffect(() => {
     const requestPayout = async () => {
       try {
         //build query
         let query = `page=${page}&limit=${limit}`;
-        const { data } = await request.get(`/payouts?${query}`);
+        let url = "";
+        if (!!searchValue) {
+          query += `&query=${searchValue}`;
+          url = `/search?${query}`;
+        } else {
+          url = `/payouts?${query}`;
+        }
 
-        setData(data);
+        const { data } = await request.get(url);
+
+        Array.isArray(data)
+          ? setData((prevData) => ({ ...prevData, data }))
+          : setData(data);
       } catch (e) {
       } finally {
         setLoading(false);
@@ -21,6 +39,6 @@ export const useGetPayouts = (page = 1, limit = 10) => {
     };
 
     requestPayout();
-  }, [page, limit]);
+  }, [page, limit, searchValue]);
   return { data, loading };
 };

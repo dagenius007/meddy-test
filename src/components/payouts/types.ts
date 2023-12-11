@@ -11,7 +11,7 @@ export interface IMetadata {
   totalCount: number;
 }
 
-export interface IPayoutResponse {
+export interface IPayoutData {
   data: IPayout[];
   metadata: IMetadata;
 }

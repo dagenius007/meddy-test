@@ -112,7 +112,7 @@ const Pagination: React.FC<PaginationProps> = ({
     <PaginationWrapper>
       <PaginationPageSize>
         <Text
-          text={`${initialLimit} - ${finalLimit} of ${totalRecords}`}
+          text={`${initialLimit} - ${finalLimit} of ${totalRecords || 0}`}
           size="base"
           weight="normal"
         />

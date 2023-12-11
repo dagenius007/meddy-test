@@ -7,21 +7,24 @@ import { FiSearch } from "react-icons/fi";
 
 interface TableHeaderProps {
   title: string;
+  searchValue: string;
+  onHandleSearchInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TableHeader: React.FC<TableHeaderProps> = ({ title }) => {
-  const [search, setSearch] = useState("");
+const TableHeader: React.FC<TableHeaderProps> = ({
+  title,
+  searchValue,
+  onHandleSearchInput,
+}) => {
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <TableHeaderText>
         <Text text={title} size="lg" weight="medium" />
       </TableHeaderText>
       <Input
-        handleChange={(e) => {
-          setSearch(e.target.value);
-        }}
+        handleChange={onHandleSearchInput}
         name="search"
-        value={search}
+        value={searchValue}
         customStyles={{
           width: "30%",
         }}
