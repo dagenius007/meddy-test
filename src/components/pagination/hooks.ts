@@ -3,8 +3,8 @@ const useMakePageNumbers = (
   totalPageCount: number,
   visiblePages = 7,
   breakCount = 5
-): any[] => {
-  let pageNumbers: any[] = [];
+): Array<string | number> => {
+  let pageNumbers: Array<string | number> = [];
 
   console.log({ currentPage, totalPageCount });
 

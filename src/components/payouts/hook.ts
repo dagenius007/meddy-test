@@ -15,14 +15,12 @@ export const useGetPayouts = (page = 1, limit = 10) => {
 
         setData(data);
       } catch (e) {
-        console.log({ e });
       } finally {
         setLoading(false);
       }
     };
 
     requestPayout();
-  }, [page]);
-
+  }, [page, limit]);
   return { data, loading };
 };

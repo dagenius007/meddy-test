@@ -1,10 +1,13 @@
-import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import MainLayout from "./components/layouts/main-layout";
 import Payouts from "./pages/payouts/payout-page";
 
 function App() {
-  return <Payouts />;
+  return (
+    <MainLayout title="Payouts">
+      <Payouts />
+    </MainLayout>
+  );
 }
 
 export default App;

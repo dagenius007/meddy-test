@@ -1,5 +1,7 @@
+import { ReactElement } from "react";
+
 // Add all layout interfaces here
 export interface IMainLayout {
-  component: React.ReactElement;
   title: string;
+  children: ReactElement;
 }

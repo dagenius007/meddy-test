@@ -1,34 +1,52 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import Pagination from "../pagination";
-import Table from "../table";
+import Table from "../table/Table";
 import { useGetPayouts } from "./hook";
 import { IPayout } from "./types";
+import TableHeader from "../table/table-header";
+import Pill from "../pills/Pill";
 
 const Payouts: React.FC = () => {
   const [page, setPage] = useState(1);
-  const [limit] = useState(10);
+  const [limit, setLimit] = useState(10);
 
   const { data, loading } = useGetPayouts(page, limit);
 
-  console.log({ loading, data });
-
   const columns = [
-    { header: "Username", accessor: "username" },
-    { header: "Value", accessor: "value" },
-    { header: "Status", accessor: "status" },
-    { header: "Date & Time", accessor: "dateAndTime" },
+    {
+      header: "Username",
+      accessor: "username",
+      styles: {
+        width: "30%",
+      },
+    },
+    {
+      header: "Value",
+      accessor: "value",
+      styles: {
+        width: "20%",
+      },
+    },
+    {
+      header: "Status",
+      accessor: "status",
+      styles: {
+        width: "20%",
+      },
+      cell: (value: string | number) => <Pill status={value as string} />,
+    },
+    {
+      header: "Date & Time",
+      accessor: "dateAndTime",
+      styles: {
+        width: "30%",
+      },
+    },
   ];
 
-  const onRefetch = (currentPage: number) => {
-    console.log({ currentPage });
-  };
-
   return (
-    <div className="App">
-      <div className="flex">
-        <p>Payout History</p>
-        <p>Search</p>
-      </div>
+    <div className="">
+      <TableHeader title="Payout History" />
       {loading ? (
         <p>Loading....</p>
       ) : (
@@ -43,6 +61,10 @@ const Payouts: React.FC = () => {
             }}
             onGoToPage={(page) => {
               setPage(page);
+            }}
+            onSelectPage={(pageSize: number) => {
+              console.log({ pageSize });
+              setLimit(pageSize);
             }}
             totalRecords={data?.metadata.totalCount as number}
             currentPage={page}

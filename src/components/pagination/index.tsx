@@ -1,100 +1,149 @@
 import React from "react";
 import styled from "styled-components";
-import { IPagination } from "./types";
 import { useMakePageNumbers } from "./hooks";
-import { PaginationButton } from "./styles";
+import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
+import Text from "../typography";
+import Select from "../select/Select";
 
-const Paginate = styled.div`
-  justify-content: center;
+interface PaginationSizeOptionProps {
+  value: number;
+  label: string;
+}
+interface PaginationProps {
+  onNextPage: () => void;
+  onPreviousPage: () => void;
+  onGoToPage: (pageNumber: number) => void;
+  onSelectPage: (pageSize: number) => void;
+  totalRecords: number;
+  currentPage: number;
+  pageSize: number;
+  pageSizeOptions?: PaginationSizeOptionProps[];
+}
+
+const PaginationWrapper = styled.div`
   margin-top: 30px;
   display: flex;
-  ul {
-    display: flex;
-    flex-wrap: wrap;
-    li {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 32px;
-      height: 32px;
-      margin-right: 8px;
-      font-family: "Inter", sans-serif;
-      line-height: 30px;
-      text-align: center;
-      vertical-align: middle;
-      list-style: none;
-      background-color: #fff;
-      border: 1px solid #d9d9d9;
-      border-radius: 4px;
-      outline: 0;
-      cursor: pointer;
+  justify-content: space-between;
+  align-items: center;
+`;
 
-      &.active {
-        border-color: #7000ff;
-        outline: none !important;
-        a {
-          color: #7000ff;
-        }
-      }
+const PaginationPageControls = styled.div`
+  display: flex;
+`;
 
-      a {
-        display: block;
-        // padding: 0 6px;
-        color: rgba(0, 0, 0, 0.65);
-        &:focus {
-          outline: none !important;
-        }
-      }
-    }
+const PaginationLinkButton = styled.button`
+  appearance: none;
+  outline: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  &.active {
+    background-color: #f2f2f2;
+    color: #6e6adf;
+  }
+  &:disabled {
+    color: ${({ theme }) => theme.disabledTextColor};
+    background: ${({ theme }) => theme.disabledColor};
+    cursor: not-allowed;
   }
 `;
 
-const Pagination: React.FC<IPagination> = ({
+const PaginationPageSize = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const PaginationControlButton = styled.button`
+  appearance: none;
+  outline: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  &:disabled {
+    color: ${({ theme }) => theme.disabledTextColor};
+    background: ${({ theme }) => theme.disabledColor};
+    cursor: not-allowed;
+  }
+`;
+
+const _pageSizeOptions: PaginationSizeOptionProps[] = [
+  { value: 10, label: "Show 10" },
+  { value: 20, label: "Show 20" },
+];
+
+const Pagination: React.FC<PaginationProps> = ({
   totalRecords,
   currentPage,
   pageSize,
   onGoToPage,
   onNextPage,
   onPreviousPage,
+  onSelectPage,
+  pageSizeOptions = _pageSizeOptions,
 }) => {
   const pageCount = Math.round(totalRecords / pageSize);
   const pageNumbers = useMakePageNumbers(currentPage, pageCount);
-  //   const returnPageCount = (totalNumberOfRecords, totalPages) => {
-  //     if (totalNumberOfRecords <= totalPages) return 1;
-  //     return totalNumberOfRecords % totalPages > 0
-  //       ? Math.floor(totalNumberOfRecords / totalPages) + 1
-  //       : totalNumberOfRecords / totalPages;
-  //   };
 
   const renderPageLinks = () => {
     return pageNumbers.map((pageNum, i) => {
       return (
-        <PaginationButton
-          onClick={() => onGoToPage(pageNum)}
+        <PaginationLinkButton
+          onClick={() => onGoToPage(pageNum as number)}
           key={`page-link-${i}`}
-          disabled={pageNum === currentPage || typeof pageNum == "string"}
+          className={`${currentPage === pageNum && "active"}`}
+          disabled={currentPage === pageNum || typeof pageNum == "string"}
         >
           {pageNum}
-        </PaginationButton>
+        </PaginationLinkButton>
       );
     });
   };
 
+  const initialLimit = currentPage === 1 ? 1 : (currentPage - 1) * pageSize + 1;
+  const finalLimit =
+    currentPage * pageSize >= totalRecords
+      ? totalRecords
+      : currentPage * pageSize;
+
   return (
-    <Paginate>
-      <p onClick={onPreviousPage}>{"<"}</p>
-      {renderPageLinks()}
-      <p onClick={onNextPage}>{">"}</p>
-      {/* <ReactPaginate
-        previousLabel="←"
-        nextLabel="→"
-        breakClassName="break-me"
-        pageCount={returnPageCount(count, pageSize)}
-        onPageChange={onChange}
-        activeClassName="active"
-        pageRangeDisplayed={3}
-      /> */}
-    </Paginate>
+    <PaginationWrapper>
+      <PaginationPageSize>
+        <Text
+          text={`${initialLimit} - ${finalLimit} of ${totalRecords}`}
+          size="base"
+          weight="normal"
+        />
+        <Select
+          name="pageSize"
+          options={pageSizeOptions}
+          handleChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            onSelectPage(+e.target.value)
+          }
+          value={pageSize}
+          customStyles={{
+            marginLeft: "20px",
+          }}
+        />
+      </PaginationPageSize>
+      <PaginationPageControls>
+        <PaginationControlButton
+          onClick={onPreviousPage}
+          disabled={currentPage === 1}
+        >
+          <FaAngleLeft color="#999dff" size={20} />
+        </PaginationControlButton>
+        {renderPageLinks()}
+        <PaginationControlButton
+          onClick={onNextPage}
+          disabled={currentPage === totalRecords}
+        >
+          <FaAngleRight color="#999dff" size={20} />
+        </PaginationControlButton>
+      </PaginationPageControls>
+    </PaginationWrapper>
   );
 };
 
