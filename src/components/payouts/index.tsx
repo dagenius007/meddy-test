@@ -6,6 +6,8 @@ import { IPayout } from "./types";
 import TableHeader from "../table/table-header";
 import Pill from "../pills/Pill";
 import { useDebounce } from "../../hooks/useDebounce";
+import dayjs from "dayjs";
+import Text from "../typography";
 
 const Payouts: React.FC = () => {
   const [page, setPage] = useState(1);
@@ -45,6 +47,12 @@ const Payouts: React.FC = () => {
       styles: {
         width: "30%",
       },
+      cell: (value: string | number) => (
+        <Text
+          text={dayjs(value).format("ddd, MMM D, YYYY h:mm A")}
+          weight="medium"
+        />
+      ),
     },
   ];
 

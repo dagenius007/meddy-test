@@ -29,6 +29,8 @@ export const useGetPayouts = (page = 1, limit = 10, searchValue: string) => {
 
         const { data } = await request.get(url);
 
+        //This is redudant if the API returns Metadata on search.
+        //Which is meant to be an object and not an array
         Array.isArray(data)
           ? setData((prevData) => ({ ...prevData, data }))
           : setData(data);
