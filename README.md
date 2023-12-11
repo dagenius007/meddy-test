@@ -12,19 +12,18 @@ React was used for building the application. Follow the steps to setup on the ap
 
 1. Install dependencies
 
-   ```
-   yarn install
-   ```
+```
+yarn install
+```
 
 ### Starting the app
 
-Now you are ready to run the application. There are two ways to run locally:
+Now you are ready to run the application.:
 
 #### Starting the app with local apis:
 
 ```
 yarn start
-
 ```
 
 ### Project Src Structure
