@@ -22,6 +22,9 @@ const LayoutWrapper = styled.div`
 
 const LayoutContainer = styled.div`
   padding: 0 30px;
+  ${media.md`
+    padding: 0px;
+  `}
 `;
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children, title }) => {

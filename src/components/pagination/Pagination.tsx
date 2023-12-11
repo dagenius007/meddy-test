@@ -3,7 +3,6 @@ import { useMakePageNumbers } from "./hooks";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import Text from "../text/Text";
 import Select from "../select/Select";
-import { Flex } from "../../global-styles/flex";
 import { media } from "../../global-styles/queries";
 
 interface PaginationSizeOptionProps {
@@ -27,17 +26,29 @@ const PaginationWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  ${media.sm`
+    display: block;
+  `};
+`;
+
+const PageSizeWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  ${media.sm`
+    justify-content: space-between
+  `};
 `;
 
 const PaginationPageSizeSelector = styled.div`
   margin-left: 20px;
-  ${media.sm`
-      margin-left: 0px;
-    `};
 `;
 
 const PaginationPageControls = styled.div`
   display: flex;
+  ${media.sm`
+    width: fit-content;
+    margin: 25px auto;
+  `};
 `;
 
 const PaginationLinkButton = styled.button`
@@ -116,7 +127,7 @@ const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <PaginationWrapper>
-      <Flex alignItems="center">
+      <PageSizeWrapper>
         <Text
           text={`${initialLimit} - ${finalLimit} of ${totalRecords || 0}`}
           size="base"
@@ -132,7 +143,7 @@ const Pagination: React.FC<PaginationProps> = ({
             value={pageSize}
           />
         </PaginationPageSizeSelector>
-      </Flex>
+      </PageSizeWrapper>
       <PaginationPageControls>
         <PaginationControlButton
           onClick={onPreviousPage}

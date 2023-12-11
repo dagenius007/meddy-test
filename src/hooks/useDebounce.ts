@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const useDebounce = <T>(searchValue: T, delay = 1000): T => {
+const useDebounce = <T>(searchValue: T, delay = 1000): T => {
   const [value, setValue] = useState<T>(searchValue);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -15,4 +15,4 @@ export const useDebounce = <T>(searchValue: T, delay = 1000): T => {
   return value;
 };
 
-export {};
+export { useDebounce };

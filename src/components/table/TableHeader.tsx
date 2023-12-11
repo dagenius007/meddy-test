@@ -9,6 +9,7 @@ const TableHeaderInput = styled.div`
   width: 30%;
   ${media.sm`
     width: 100%;
+    margin-bottom: 25px;
   `}
 `;
 const TableHeaderText = styled.div`

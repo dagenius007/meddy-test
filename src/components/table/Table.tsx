@@ -21,8 +21,13 @@ interface TableProps {
   testId?: string;
 }
 
+const TableContainer = styled.div`
+  overflow-x: scroll;
+`;
+
 const TableWrapper = styled.table`
   width: 100%;
+  white-space: nowrap;
   border-collapse: collapse;
 `;
 
@@ -70,29 +75,31 @@ const Table: React.FC<TableProps> = ({
   isLoading = false,
 }) => {
   return (
-    <TableWrapper>
-      <thead>
-        <tr>
-          {columns.map((column: ColumnProps, i: number) => (
-            <Th key={i} style={column.styles}>
-              {column.header}
-            </Th>
-          ))}
-        </tr>
-      </thead>
-
-      <tbody>
-        {rows.map((row: Record<string, string | number>, i: number) => (
-          <Tr key={i} data-testid={`${testId}-row`}>
+    <TableContainer>
+      <TableWrapper>
+        <thead>
+          <tr>
             {columns.map((column: ColumnProps, i: number) => (
-              <Td key={i} style={column.styles}>
-                <RowContent isLoading={isLoading} row={row} column={column} />
-              </Td>
+              <Th key={i} style={column.styles}>
+                {column.header}
+              </Th>
             ))}
-          </Tr>
-        ))}
-      </tbody>
-    </TableWrapper>
+          </tr>
+        </thead>
+
+        <tbody>
+          {rows.map((row: Record<string, string | number>, i: number) => (
+            <Tr key={i} data-testid={`${testId}-row`}>
+              {columns.map((column: ColumnProps, i: number) => (
+                <Td key={i} style={column.styles}>
+                  <RowContent isLoading={isLoading} row={row} column={column} />
+                </Td>
+              ))}
+            </Tr>
+          ))}
+        </tbody>
+      </TableWrapper>
+    </TableContainer>
   );
 };
 

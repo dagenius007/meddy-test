@@ -1,7 +1,7 @@
 const generateSkeletonRows = () => {
   let count = 0;
   const output = [];
-  while (count < 20) {
+  while (count < 10) {
     output.push({});
     count++;
   }
