@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useDebounce } from "../../hooks/useDebounce";
 import { generateSkeletonRows } from "../../utils/loader";
 import Pagination from "../pagination/Pagination";
@@ -9,15 +9,28 @@ import TableHeader from "../table/TableHeader";
 import Text from "../text/Text";
 import { useGetPayouts } from "./hooks";
 import { IPayout } from "./types/payout-component";
+import { updatePageQuery } from "../../utils/url";
 
 const PayoutsComponent: React.FC = () => {
-  const [page, setPage] = useState(1);
+  // Using this here to retain current page after refresh
+  // React router will be a better implmentation here
+  // Limiting this to using window object
+  const url = new URL(window.location.href);
+  const _page = url.searchParams.get("page") || 1;
+  const [page, setPage] = useState(+_page);
   const [limit, setLimit] = useState(10);
   const [searchValue, setSearchValue] = useState("");
 
   const debouncValue = useDebounce(searchValue, 500);
 
   const { data, loading } = useGetPayouts(page, limit, debouncValue);
+
+  useLayoutEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [data]);
 
   const columns = [
     {
@@ -84,12 +97,15 @@ const PayoutsComponent: React.FC = () => {
           <Pagination
             onNextPage={() => {
               setPage(page + 1);
+              updatePageQuery(url, page + 1);
             }}
             onPreviousPage={() => {
               setPage(page - 1);
+              updatePageQuery(url, page - 1);
             }}
             onGoToPage={(page) => {
               setPage(page);
+              updatePageQuery(url, page);
             }}
             onSelectPage={(pageSize: number) => {
               setLimit(pageSize);

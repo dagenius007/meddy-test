@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { useMakePageNumbers } from "./hooks";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
