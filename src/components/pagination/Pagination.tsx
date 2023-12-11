@@ -2,8 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { useMakePageNumbers } from "./hooks";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
-import Text from "../typography";
+import Text from "../text/Text";
 import Select from "../select/Select";
+import { Flex } from "../../global-styles/flex";
+import { media } from "../../global-styles/queries";
 
 interface PaginationSizeOptionProps {
   value: number;
@@ -25,6 +27,13 @@ const PaginationWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+const PaginationPageSizeSelector = styled.div`
+  margin-left: "20px";
+  ${media.sm`
+      margin-left: 0px;
+    `};
 `;
 
 const PaginationPageControls = styled.div`
@@ -49,11 +58,6 @@ const PaginationLinkButton = styled.button`
     background: ${({ theme }) => theme.disabledColor};
     cursor: not-allowed;
   }
-`;
-
-const PaginationPageSize = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 const PaginationControlButton = styled.button`
@@ -110,24 +114,23 @@ const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <PaginationWrapper>
-      <PaginationPageSize>
+      <Flex alignItems="center">
         <Text
           text={`${initialLimit} - ${finalLimit} of ${totalRecords || 0}`}
           size="base"
           weight="normal"
         />
-        <Select
-          name="pageSize"
-          options={pageSizeOptions}
-          handleChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            onSelectPage(+e.target.value)
-          }
-          value={pageSize}
-          customStyles={{
-            marginLeft: "20px",
-          }}
-        />
-      </PaginationPageSize>
+        <PaginationPageSizeSelector>
+          <Select
+            name="pageSize"
+            options={pageSizeOptions}
+            handleChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              onSelectPage(+e.target.value)
+            }
+            value={pageSize}
+          />
+        </PaginationPageSizeSelector>
+      </Flex>
       <PaginationPageControls>
         <PaginationControlButton
           onClick={onPreviousPage}

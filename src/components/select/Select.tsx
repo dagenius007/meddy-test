@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { FaAngleDown } from "react-icons/fa";
 
 interface OptionProps {
   label: string;

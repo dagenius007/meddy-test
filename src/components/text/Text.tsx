@@ -1,4 +1,6 @@
-export interface IText {
+import styled from "styled-components";
+
+export interface TextProps {
   text: string;
   size?: "base" | "lg" | "xl";
   weight?: "normal" | "medium" | "bold";
@@ -30,4 +32,22 @@ const textWeights: Record<string, string> = {
   bold: "600",
 };
 
-export { textSizes, textWeights };
+const TextWrapper = styled.p<TextStyleProps>`
+  font-size: ${({ size }) => textSizes[size].fontSize};
+  line-height: ${({ size }) => textSizes[size].lineHeight};
+  font-weight: ${({ weight }) => textWeights[weight]};
+`;
+
+const Text: React.FC<TextProps> = ({
+  text,
+  size = "base",
+  weight = "normal",
+}) => {
+  return (
+    <TextWrapper size={size} weight={weight} className="">
+      {text}
+    </TextWrapper>
+  );
+};
+
+export default Text;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { IPayoutData } from "./types";
-import request from "../../config/api";
-import { AxiosResponse } from "axios";
+import request from "../../internals/api";
+import { IPayoutData } from "./types/payout-component";
+import toast from "react-hot-toast";
 
 export const useGetPayouts = (page = 1, limit = 10, searchValue: string) => {
   const [loading, setLoading] = useState(true);
@@ -35,6 +35,7 @@ export const useGetPayouts = (page = 1, limit = 10, searchValue: string) => {
           ? setData((prevData) => ({ ...prevData, data }))
           : setData(data);
       } catch (e) {
+        toast.error("An error occured fetching payouts");
       } finally {
         setLoading(false);
       }

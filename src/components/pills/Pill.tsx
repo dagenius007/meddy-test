@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Text from "../typography";
+import Text from "../text/Text";
 
 const statusMapping: Record<string, string> = {
   Completed: "#60CA57",

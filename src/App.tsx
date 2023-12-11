@@ -1,6 +1,6 @@
 import "./App.css";
-import MainLayout from "./components/layouts/main-layout";
-import Payouts from "./pages/payouts/payout-page";
+import MainLayout from "./components/layouts/MainLayout";
+import Payouts from "./pages/payouts/Payouts";
 
 function App() {
   return (

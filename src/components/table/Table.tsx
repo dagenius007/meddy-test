@@ -1,19 +1,27 @@
 import { ReactElement } from "react";
 import styled from "styled-components";
-
-export interface ColumnProps {
+import Skeleton from "../skeleton/Skeleton";
+interface ColumnProps {
   header: string;
   accessor: string;
   cell?: (columnValue: string | number) => ReactElement;
   styles?: Record<string, string>;
 }
 
-export interface TableProps {
-  columns: ColumnProps[];
-  rows: Record<string, any>[];
+interface RowContentProps {
+  isLoading: boolean;
+  column: ColumnProps;
+  row: Record<string, any>;
 }
 
-export interface TableHeaderProps {
+interface TableProps {
+  columns: ColumnProps[];
+  rows: Record<string, any>[];
+  isLoading?: boolean;
+  testId?: string;
+}
+
+interface TableHeaderProps {
   title: string;
 }
 
@@ -43,7 +51,28 @@ const Tr = styled.tr`
   }
 `;
 
-const Table: React.FC<TableProps> = ({ columns, rows }) => {
+const RowContent: React.FC<RowContentProps> = ({
+  isLoading = false,
+  column,
+  row,
+}) => {
+  if (isLoading) return <Skeleton />;
+
+  return (
+    <>
+      {column.cell
+        ? column.cell(row[column?.accessor])
+        : row[column?.accessor] || "-"}
+    </>
+  );
+};
+
+const Table: React.FC<TableProps> = ({
+  columns,
+  rows,
+  testId,
+  isLoading = false,
+}) => {
   return (
     <TableWrapper>
       <thead>
@@ -58,10 +87,14 @@ const Table: React.FC<TableProps> = ({ columns, rows }) => {
         <Tr key={i}>
           {columns.map((column: ColumnProps, i: number) => (
             <Td key={i} style={column.styles}>
-              {column.cell
-                ? column.cell(row[columns[i]?.accessor])
-                : row[columns[i]?.accessor] || "-"}
-              {}
+              <RowContent isLoading={isLoading} row={row} column={column} />
+              {/* {isLoading ? (
+                <Skeleton />
+              ) : column.cell ? (
+                column.cell(row[column?.accessor])
+              ) : (
+                row[column?.accessor] || "-"
+              )} */}
             </Td>
           ))}
         </Tr>

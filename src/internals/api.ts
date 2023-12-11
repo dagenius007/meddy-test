@@ -8,14 +8,6 @@ const request = axios.create({
   },
 });
 
-// request.defaults.timeout = 5000;
-
-request.interceptors.request.use(function (config) {
-  const token = localStorage.getItem("merchant_token");
-  config.headers.Authorization = token ? `Bearer ${token}` : "";
-  return config;
-});
-
 // handleError;
 
 // request.interceptors.response.use(function (config) {

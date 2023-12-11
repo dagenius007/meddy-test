@@ -1,15 +1,16 @@
 import { useState } from "react";
-import Pagination from "../pagination";
+import Pagination from "../pagination/Pagination";
 import Table from "../table/Table";
-import { useGetPayouts } from "./hook";
-import { IPayout } from "./types";
-import TableHeader from "../table/table-header";
+import { useGetPayouts } from "./hooks";
+import { IPayout } from "./types/payout-component";
+import TableHeader from "../table/TableHeader";
 import Pill from "../pills/Pill";
 import { useDebounce } from "../../hooks/useDebounce";
 import dayjs from "dayjs";
-import Text from "../typography";
+import Text from "../text/Text";
+import { generateSkeletonRows } from "../../utils/loader";
 
-const Payouts: React.FC = () => {
+const PayoutsComponent: React.FC = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [searchValue, setSearchValue] = useState("");
@@ -61,14 +62,18 @@ const Payouts: React.FC = () => {
   };
 
   return (
-    <div className="">
+    <>
       <TableHeader
         title="Payout History"
         searchValue={searchValue}
         onHandleSearchInput={onChange}
       />
       {loading ? (
-        <p>Loading....</p>
+        <Table
+          columns={columns}
+          rows={generateSkeletonRows()}
+          isLoading={true}
+        />
       ) : (
         <>
           <Table columns={columns} rows={(data?.data || []) as IPayout[]} />
@@ -92,8 +97,8 @@ const Payouts: React.FC = () => {
           />
         </>
       )}
-    </div>
+    </>
   );
 };
 
-export default Payouts;
+export default PayoutsComponent;
