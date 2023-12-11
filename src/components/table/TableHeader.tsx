@@ -45,7 +45,12 @@ const TableHeader: React.FC<TableHeaderProps> = ({
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <TableHeaderText>
-        <Text text={title} size="lg" weight="medium" />
+        <Text
+          text={title}
+          size="lg"
+          weight="medium"
+          testId="payout-table-header-text"
+        />
       </TableHeaderText>
       <TableHeaderInput>
         <Input

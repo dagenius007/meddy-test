@@ -1,14 +1,14 @@
+import dayjs from "dayjs";
 import { useState } from "react";
+import { useDebounce } from "../../hooks/useDebounce";
+import { generateSkeletonRows } from "../../utils/loader";
 import Pagination from "../pagination/Pagination";
+import Pill from "../pills/Pill";
 import Table from "../table/Table";
+import TableHeader from "../table/TableHeader";
+import Text from "../text/Text";
 import { useGetPayouts } from "./hooks";
 import { IPayout } from "./types/payout-component";
-import TableHeader from "../table/TableHeader";
-import Pill from "../pills/Pill";
-import { useDebounce } from "../../hooks/useDebounce";
-import dayjs from "dayjs";
-import Text from "../text/Text";
-import { generateSkeletonRows } from "../../utils/loader";
 
 const PayoutsComponent: React.FC = () => {
   const [page, setPage] = useState(1);
@@ -76,7 +76,11 @@ const PayoutsComponent: React.FC = () => {
         />
       ) : (
         <>
-          <Table columns={columns} rows={(data?.data || []) as IPayout[]} />
+          <Table
+            columns={columns}
+            rows={(data?.data || []) as IPayout[]}
+            testId="payout-collection"
+          />
           <Pagination
             onNextPage={() => {
               setPage(page + 1);
@@ -88,7 +92,6 @@ const PayoutsComponent: React.FC = () => {
               setPage(page);
             }}
             onSelectPage={(pageSize: number) => {
-              console.log({ pageSize });
               setLimit(pageSize);
             }}
             totalRecords={(data?.metadata?.totalCount || 0) as number}

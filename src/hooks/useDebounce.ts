@@ -10,7 +10,7 @@ export const useDebounce = <T>(searchValue: T, delay = 1000): T => {
     return () => {
       clearTimeout(timer);
     };
-  }, [searchValue]);
+  }, [searchValue, delay]);
 
   return value;
 };

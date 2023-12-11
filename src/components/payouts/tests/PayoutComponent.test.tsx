@@ -1,48 +1,38 @@
-import axios from "axios";
+import { render, screen, waitFor } from "@testing-library/react";
+import request from "../../../internals/api";
 import { payoutsMock } from "../../../mocks/payoutMocks";
-import { render } from "@testing-library/react";
 import PayoutsComponent from "../PayoutsComponent";
 
-jest.mock("axios");
+jest.mock("request", () => ({
+  get: jest.fn(),
+}));
 
-const axiosMock = axios as any;
 describe("Payout Component", () => {
   beforeEach(() => {
-    axiosMock.mockImplementation((config: any) => {
-      console.log({ config });
-      switch (true) {
-        case /payouts/.test(config.url):
-          console.log({ v: "hee" });
-          return Promise.resolve({
-            data: payoutsMock,
-          });
-        default:
-          return Promise.resolve({
-            data: [],
-            metadata: {
-              page: 1,
-              limit: 10,
-              totalCount: 0,
-            },
-          });
-      }
+    jest
+      .spyOn(request, "get")
+      .mockImplementation(
+        jest.fn(() => Promise.resolve({ data: payoutsMock }))
+      );
+  });
+
+  test("it should payout history as table header ", async () => {
+    render(<PayoutsComponent />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("payout-table-header-text")).toHaveTextContent(
+        "Payout History"
+      );
     });
-    console.log("kii", axiosMock.mockImplementation);
   });
 
-  test("it should load payment link table after fetch", async () => {
-    const { container } = render(<PayoutsComponent />);
+  test("it should load payout table after ", async () => {
+    let elements = [];
+    const ui = render(<PayoutsComponent />);
 
-    const elements = container.querySelectorAll("tr");
-
-    expect(elements.length).toBe(11);
+    await waitFor(() => {
+      elements = ui.getAllByTestId("payout-collection-row");
+      expect(elements.length).toBe(11);
+    });
   });
-
-  // test("it should load payment link table after fetch", async () => {
-  //   const { container } = render(<PayoutsComponent />);
-
-  //   const elements = container.querySelectorAll("tr");
-
-  //   expect(elements.length).toBe(11);
-  // });
 });

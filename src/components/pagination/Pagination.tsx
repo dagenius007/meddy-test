@@ -20,6 +20,7 @@ interface PaginationProps {
   currentPage: number;
   pageSize: number;
   pageSizeOptions?: PaginationSizeOptionProps[];
+  testId?: string;
 }
 
 const PaginationWrapper = styled.div`
@@ -30,7 +31,7 @@ const PaginationWrapper = styled.div`
 `;
 
 const PaginationPageSizeSelector = styled.div`
-  margin-left: "20px";
+  margin-left: 20px;
   ${media.sm`
       margin-left: 0px;
     `};
@@ -87,6 +88,7 @@ const Pagination: React.FC<PaginationProps> = ({
   onPreviousPage,
   onSelectPage,
   pageSizeOptions = _pageSizeOptions,
+  testId,
 }) => {
   const pageCount = Math.round(totalRecords / pageSize);
   const pageNumbers = useMakePageNumbers(currentPage, pageCount);
@@ -99,6 +101,7 @@ const Pagination: React.FC<PaginationProps> = ({
           key={`page-link-${i}`}
           className={`${currentPage === pageNum && "active"}`}
           disabled={currentPage === pageNum || typeof pageNum == "string"}
+          data-testid={`${testId}-link-buttons`}
         >
           {pageNum}
         </PaginationLinkButton>
@@ -135,6 +138,7 @@ const Pagination: React.FC<PaginationProps> = ({
         <PaginationControlButton
           onClick={onPreviousPage}
           disabled={currentPage === 1}
+          data-testid={`${testId}-back-button`}
         >
           <FaAngleLeft color="#999dff" size={20} />
         </PaginationControlButton>
@@ -142,6 +146,7 @@ const Pagination: React.FC<PaginationProps> = ({
         <PaginationControlButton
           onClick={onNextPage}
           disabled={currentPage === totalRecords}
+          data-testid={`${testId}-next-button`}
         >
           <FaAngleRight color="#999dff" size={20} />
         </PaginationControlButton>

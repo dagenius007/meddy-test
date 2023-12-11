@@ -6,8 +6,6 @@ const useMakePageNumbers = (
 ): Array<string | number> => {
   let pageNumbers: Array<string | number> = [];
 
-  console.log({ currentPage, totalPageCount });
-
   if (totalPageCount <= visiblePages) {
     pageNumbers = new Array(totalPageCount)
       .fill(" ")

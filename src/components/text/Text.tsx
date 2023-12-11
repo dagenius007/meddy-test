@@ -4,6 +4,7 @@ export interface TextProps {
   text: string;
   size?: "base" | "lg" | "xl";
   weight?: "normal" | "medium" | "bold";
+  testId?: string;
 }
 
 export interface TextStyleProps {
@@ -42,9 +43,10 @@ const Text: React.FC<TextProps> = ({
   text,
   size = "base",
   weight = "normal",
+  testId,
 }) => {
   return (
-    <TextWrapper size={size} weight={weight} className="">
+    <TextWrapper size={size} weight={weight} className="" data-testid={testId}>
       {text}
     </TextWrapper>
   );
