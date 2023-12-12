@@ -86,11 +86,7 @@ const PayoutsComponent: React.FC = () => {
         onHandleSearchInput={onChange}
       />
       {loading ? (
-        <Table
-          columns={columns}
-          rows={generateSkeletonRows()}
-          isLoading={true}
-        />
+        <Table columns={columns} rows={generateSkeletonRows()} isLoading />
       ) : (
         <>
           <Table

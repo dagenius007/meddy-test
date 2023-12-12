@@ -17,7 +17,7 @@ const useMakePageNumbers = (
       let i = 1;
       while (i <= breakCount) {
         pageNumbers.push(i);
-        i++;
+        i += 1;
       }
       pageNumbers.push("...", totalPageCount);
     }
@@ -42,7 +42,7 @@ const useMakePageNumbers = (
       let i = currentPage - breakCount;
       while (i <= currentPage) {
         pageNumbers.push(i);
-        i++;
+        i += 1;
       }
     }
   }

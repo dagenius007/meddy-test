@@ -3,7 +3,7 @@ import request from "../../internals/api";
 import { IPayoutData } from "./types/payout-component";
 import toast from "react-hot-toast";
 
-export const useGetPayouts = (page = 1, limit = 10, searchValue: string) => {
+const useGetPayouts = (page = 1, limit = 10, searchValue: string) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<IPayoutData>({
     data: [],
@@ -31,16 +31,18 @@ export const useGetPayouts = (page = 1, limit = 10, searchValue: string) => {
 
         //This is redudant if the API returns Metadata on search.
         //Which is meant to be an object and not an array
-        Array.isArray(data)
-          ? setData({
-              data,
-              metadata: {
-                page: 1,
-                limit: data.length,
-                totalCount: data.length,
-              },
-            })
-          : setData(data);
+        if (Array.isArray(data)) {
+          setData({
+            data,
+            metadata: {
+              page: 1,
+              limit: data.length,
+              totalCount: data.length,
+            },
+          });
+        } else {
+          setData(data);
+        }
       } catch (e) {
         toast.error("An error occured fetching payouts");
       } finally {
@@ -52,3 +54,5 @@ export const useGetPayouts = (page = 1, limit = 10, searchValue: string) => {
   }, [page, limit, searchValue]);
   return { data, loading };
 };
+
+export { useGetPayouts };

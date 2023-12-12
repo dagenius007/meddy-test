@@ -15,7 +15,7 @@ const TableHeaderInput = styled.div`
 const TableHeaderText = styled.div`
   position: relative;
   &::before {
-    content: " ";
+    content: "";
     height: 32px;
     width: 16px;
     background-color: #999dff;

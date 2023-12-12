@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useMakePageNumbers } from "./hooks";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
+import { useMakePageNumbers } from "./hooks";
 import Text from "../text/Text";
 import Select from "../select/Select";
 import { media } from "../../global-styles/queries";
@@ -110,7 +110,7 @@ const Pagination: React.FC<PaginationProps> = ({
           onClick={() => onGoToPage(pageNum as number)}
           key={`page-link-${i}`}
           className={`${currentPage === pageNum && "active"}`}
-          disabled={currentPage === pageNum || typeof pageNum == "string"}
+          disabled={currentPage === pageNum || typeof pageNum === "string"}
           data-testid={`${testId}-link-buttons`}
         >
           {pageNum}

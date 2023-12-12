@@ -52,7 +52,7 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <InputWrapper style={customStyles} className={customClass}>
-      {icon ? icon : ""}
+      {icon && icon}
       <InputField
         onChange={handleChange}
         name={name}

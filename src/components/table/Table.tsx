@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 import styled from "styled-components";
 import Skeleton from "../skeleton/Skeleton";
+
 interface ColumnProps {
   header: string;
   accessor: string;
