@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
-//Basic set parrams function
-// It can be improved to take in different types e.g array and nested objects
+//Basic set parrams function. It can be improved to take in different types e.g array and nested objects
 const useParams = (url: URL, params: Record<string, string>) => {
   useEffect(() => {
     Object.keys(params).forEach((param) => {
